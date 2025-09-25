@@ -21,7 +21,6 @@ exports.handler = async (event) => {
       statusCode: 200,
       headers: {
         'Content-Type': 'audio/mpeg',
-        'Content-Disposition': 'attachment; filename="speech.mp3"'
       },
       body: Buffer.from(arrayBuffer).toString('base64'),
       isBase64Encoded: true
