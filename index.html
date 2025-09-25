@@ -40,11 +40,11 @@ document.getElementById('download').onclick = async () => {
   const text = document.getElementById('txt').value.trim();
   if(!text) return alert('أدخل نصاً أولاً');
   const hl   = document.getElementById('lang').value;
-  const v    = document.getElementById('voice').value.trim();
+  const voice = document.getElementById('voice').value.trim();
   const resp = await fetch('/.netlify/functions/tts-voicerss', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ text, hl, v })
+    body: JSON.stringify({ text, hl, v: voice })
   });
   if(!resp.ok){ alert('حدث خطأ في التوليد'); return; }
   const blob = await resp.blob();
