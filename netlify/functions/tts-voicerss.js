@@ -1,4 +1,3 @@
-const fetch = (...args) => import('node-fetch').then(m => m.default(...args));
 
 exports.handler = async (event) => {
   try {
