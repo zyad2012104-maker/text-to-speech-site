@@ -38,25 +38,43 @@
 <script>
 document.getElementById('download').onclick = async () => {
   const text = document.getElementById('txt').value.trim();
-  if(!text) return alert('أدخل نصاً أولاً');
-  const hl   = document.getElementById('lang').value;
+  if (!text) return alert('أدخل نصاً أولاً');
+
+  const hl    = document.getElementById('lang').value;
   const voice = document.getElementById('voice').value.trim();
+
+  // استدعاء الـ Function من Netlify
   const resp = await fetch('/.netlify/functions/tts-voicerss', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ text, hl, v: voice })
   });
-  if(!resp.ok){ alert('حدث خطأ في التوليد'); return; }
+
+  if (!resp.ok) { 
+    alert('حدث خطأ في التوليد'); 
+    return; 
+  }
+
+  // تحويل النتيجة إلى Blob (ملف صوت)
   const blob = await resp.blob();
   const url  = URL.createObjectURL(blob);
-  // تشغيل الصوت
-  document.getElementById('player').src = url;
-  // تنزيل الملف
+
+  // ✅ تشغيل الصوت في المشغل
+  const player = document.getElementById('player');
+  player.style.display = 'block';  // إظهار مشغل الصوت
+  player.src = url;                // ربط ملف الصوت بالمشغل
+  player.play();                   // تشغيل الصوت مباشرة
+
+  // ✅ تنزيل الملف تلقائياً
   const a = document.createElement('a');
-  a.href = url; a.download = 'speech.mp3';
+  a.href = url;
+  a.download = 'speech.mp3';
   a.click();
+
+  // تنظيف الرابط من الذاكرة
   URL.revokeObjectURL(url);
 };
 </script>
 </body>
 </html>
+
